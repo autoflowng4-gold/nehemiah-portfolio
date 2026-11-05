@@ -1,0 +1,368 @@
+import { useState, type ReactNode } from "react";
+import { Menu, X, ArrowRight, Code2, Headphones, MonitorCog, Briefcase } from "lucide-react";
+import {
+  capabilities,
+  contact,
+  cvUrl,
+  navLinks,
+  profile,
+  projects,
+  skillGroups,
+} from "@/content/portfolio";
+import { Button } from "@/components/ui/button";
+import { TalkButton } from "@/components/chat";
+import portrait from "@/assets/nehemiah-portrait.png.asset.json";
+
+const icons = [Code2, Headphones, MonitorCog, Briefcase];
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 border-b bg-background/85 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+        <a href="#home" className="font-display text-lg font-semibold tracking-[0.2em]">
+          NEHEMIAH
+        </a>
+        <nav aria-label="Main" className="hidden lg:block">
+          <ul className="flex gap-6 text-sm text-muted-foreground">
+            {navLinks.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} className="transition-colors hover:text-foreground">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="flex items-center gap-2">
+          <TalkButton />
+          <Button
+            type="button"
+            variant="outline"
+            className="grid h-11 w-11 place-items-center rounded-md border lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((o) => !o)}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </Button>
+        </div>
+      </div>
+      <MobileNavigation open={open} onNavigate={() => setOpen(false)} />
+    </header>
+  );
+}
+
+function MobileNavigation({ open, onNavigate }: { open: boolean; onNavigate: () => void }) {
+  if (!open) return null;
+  return (
+    <nav id="mobile-nav" aria-label="Mobile" className="border-t bg-background lg:hidden">
+      <ul className="mx-auto max-w-6xl px-5 py-3">
+        {navLinks.map((l) => (
+          <li key={l.href}>
+            <a
+              href={l.href}
+              onClick={onNavigate}
+              className="block py-3 text-base text-muted-foreground hover:text-foreground"
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+export function Hero() {
+  return (
+    <section id="home" className="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-32">
+      <div className="relative mx-auto max-w-6xl px-5 fade-up">
+        <p className="mb-5 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" /> {profile.positioning}
+        </p>
+        <h1 className="max-w-4xl text-4xl font-semibold leading-[1.08] sm:text-5xl md:text-7xl">
+          {profile.name}
+          <span className="mt-4 block text-2xl leading-snug text-primary sm:text-3xl md:text-4xl">
+            {profile.headline}
+          </span>
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{profile.intro}</p>
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a
+            href="#projects"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-primary px-6 font-semibold text-primary-foreground transition hover:opacity-90"
+          >
+            Explore my work <ArrowRight size={18} />
+          </a>
+          <a
+            href="#contact"
+            className="inline-flex h-12 items-center justify-center rounded-md border px-6 font-semibold transition hover:bg-secondary"
+          >
+            Get in touch
+          </a>
+          <a
+            href={cvUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-12 items-center justify-center rounded-md border px-6 font-semibold transition hover:bg-secondary"
+          >
+            View CV
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function SectionHeading({
+  eyebrow,
+  title,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="mb-10 max-w-2xl">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-primary">
+        {eyebrow}
+      </p>
+      <h2 className="text-3xl font-semibold md:text-4xl">{title}</h2>
+      {children && <p className="mt-4 text-muted-foreground">{children}</p>}
+    </div>
+  );
+}
+
+export function ProfileSection() {
+  return (
+    <section id="profile" className="border-t py-16">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 md:grid-cols-[280px_1fr]">
+        <img
+          src={portrait.url}
+          alt="Portrait of Nehemiah"
+          width={768}
+          height={768}
+          className="mx-auto aspect-square w-60 object-contain md:w-72"
+          loading="lazy"
+        />
+        <div className="text-center md:text-left">
+          <p className="mb-3 text-sm font-semibold text-primary">MEET NEHEMIAH</p>
+          <h2 className="text-3xl font-semibold">Technology. People. Possibility.</h2>
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{profile.about[0]}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Section({ id, children, alt }: { id: string; children: ReactNode; alt?: boolean }) {
+  return (
+    <section
+      id={id}
+      className={`border-t py-20 md:py-28 ${alt ? "bg-surface/70" : "bg-background/30"}`}
+    >
+      <div className="mx-auto max-w-6xl px-5">{children}</div>
+    </section>
+  );
+}
+
+function Placeholder({ children }: { children: ReactNode }) {
+  return (
+    <span className="rounded border border-dashed px-2 py-0.5 text-xs text-muted-foreground">
+      {children}
+    </span>
+  );
+}
+
+export function About() {
+  return (
+    <Section id="about">
+      <div className="grid gap-10 md:grid-cols-[1fr_1.4fr]">
+        <SectionHeading eyebrow="About" title="Technology, people and operations." />
+        <div className="space-y-5 text-lg text-muted-foreground">
+          {profile.about.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+          <Placeholder>Expanded biography awaiting confirmation</Placeholder>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+export function CapabilityCard({
+  title,
+  description,
+  index,
+}: {
+  title: string;
+  description: string;
+  index: number;
+}) {
+  const Icon = icons[index % icons.length] ?? Code2;
+  return (
+    <article className="group rounded-xl border bg-card p-6 transition hover:border-primary/60">
+      <div className="mb-6 flex items-center justify-between">
+        <span className="grid h-11 w-11 place-items-center rounded-lg bg-secondary text-primary">
+          <Icon size={22} />
+        </span>
+        <span className="font-display text-sm text-muted-foreground">0{index + 1}</span>
+      </div>
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <p className="mt-2 text-muted-foreground">{description}</p>
+    </article>
+  );
+}
+
+export function WhatIDo() {
+  return (
+    <Section id="what-i-do" alt>
+      <SectionHeading eyebrow="What I do" title="Four ways I add value." />
+      <div className="grid gap-4 sm:grid-cols-2">
+        {capabilities.map((c, i) => (
+          <CapabilityCard key={c.title} {...c} index={i} />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+export function Skills() {
+  return (
+    <Section id="skills">
+      <SectionHeading eyebrow="Skills" title="Toolkit">
+        Current areas of focus; additional skills awaiting confirmation.
+      </SectionHeading>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {skillGroups.map((g) => (
+          <div key={g.category} className="rounded-xl border bg-card p-6">
+            <h3 className="mb-4 font-semibold">{g.category}</h3>
+            <ul className="flex flex-wrap gap-2">
+              {g.skills.map((s) => (
+                <li
+                  key={s}
+                  className="rounded-md bg-secondary px-3 py-1 text-sm text-secondary-foreground"
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+export function ProjectCard({ p }: { p: (typeof projects)[number] }) {
+  return (
+    <article className="rounded-2xl border bg-card p-6 md:p-10">
+      <div className="flex flex-wrap items-center gap-3">
+        <h3 className="text-2xl font-semibold md:text-3xl">{p.name}</h3>
+        <span className="text-sm text-muted-foreground">{p.org}</span>
+        <span className="rounded-full border border-primary/50 px-3 py-0.5 text-xs text-primary">
+          {p.status}
+        </span>
+      </div>
+      <p className="mt-4 max-w-3xl text-muted-foreground">{p.description}</p>
+      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div>
+          <h4 className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]">Implemented</h4>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            {p.implemented.map((x) => (
+              <li key={x}>— {x}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4 className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]">
+            Planned direction
+          </h4>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            {p.planned.map((x) => (
+              <li key={x}>— {x}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export function Projects() {
+  return (
+    <Section id="projects" alt>
+      <SectionHeading eyebrow="Projects" title="Selected work" />
+      <div className="space-y-4">
+        {projects.map((p) => (
+          <ProjectCard key={p.name} p={p} />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+export function Experience() {
+  return (
+    <Section id="experience">
+      <SectionHeading eyebrow="Experience" title="Professional journey" />
+      <div className="rounded-xl border border-dashed p-10 text-center text-muted-foreground">
+        Professional experience details to be added.
+      </div>
+    </Section>
+  );
+}
+
+export function ContactSection() {
+  return (
+    <Section id="contact" alt>
+      <SectionHeading eyebrow="Contact" title="Let's work together." />
+      <dl className="grid gap-4 sm:grid-cols-2">
+        {contact.map((c) => {
+          const href =
+            c.label === "Email" && c.value
+              ? `mailto:${c.value}`
+              : c.label === "WhatsApp" && c.value
+                ? `https://wa.me/${c.value.replace(/[^0-9]/g, "")}`
+                : c.label === "Twitter / X" && c.value
+                  ? c.value
+                  : null;
+          return (
+            <div key={c.label} className="rounded-xl border bg-card p-5">
+              <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{c.label}</dt>
+              <dd className="mt-2 font-medium">
+                {c.value ? (
+                  href ? (
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                      {c.value}
+                    </a>
+                  ) : (
+                    c.value
+                  )
+                ) : (
+                  <Placeholder>To be added</Placeholder>
+                )}
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+    </Section>
+  );
+}
+
+export function Footer() {
+  return (
+    <footer className="border-t py-10">
+      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 text-sm text-muted-foreground sm:flex-row sm:justify-between">
+        <p>
+          <span className="font-semibold text-foreground">Nehemiah</span> — {profile.positioning}
+        </p>
+        <p>© {new Date().getFullYear()} Nehemiah</p>
+      </div>
+    </footer>
+  );
+}
