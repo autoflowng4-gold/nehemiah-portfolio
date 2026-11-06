@@ -91,6 +91,68 @@ export const projects = [
   },
 ];
 
+export const experienceIntro =
+  "A background in technology, digital solutions, operations and customer service.";
+
+export const experienceSummary =
+  "My experience spans technology development, website creation, AI-powered solutions, business operations, customer service and logistics. Through both independent technology projects and workplace experience, I have developed practical skills in solving problems, supporting business activities and working with digital tools.";
+
+export const experience = [
+  {
+    title: "Technology & Digital Solutions",
+    role: "Independent Technology Development",
+    period: "2025 – Present",
+    description:
+      "Building practical technology solutions, websites and digital platforms, with a growing focus on artificial intelligence and its application to real-world business needs.",
+    responsibilities: [
+      "Design and develop websites and digital platforms.",
+      "Build and explore AI-powered tools and business solutions.",
+      "Work with modern web technologies and development tools.",
+      "Develop digital products focused on improving business processes and customer experiences.",
+      "Troubleshoot, maintain and improve digital platforms.",
+    ],
+  },
+  {
+    title: "Fuel Station Operations",
+    role: "NNPC Filling Station (Aug – Dec 2024, 5 Months) · NEO Piece Filling Station (2025, 7 Months)",
+    period: "2024 – 2025",
+    description:
+      "Gained hands-on experience in fuel station operations, petroleum product dispensing and customer service across two different stations.",
+    responsibilities: [
+      "Dispensed petroleum products accurately and served customers professionally.",
+      "Supported daily station operations and maintained efficient service delivery.",
+      "Followed established safety standards and proper fuel-handling procedures.",
+    ],
+  },
+  {
+    title: "Logistics & Site Support",
+    role: "Kaluchi International Services Limited — Delivery & Logistics Support",
+    period: "2025 · 3 Months",
+    description:
+      "Supported an Engineering, Procurement, Construction and Commissioning (EPCC) company by delivering essential work tools and materials to designated project sites.",
+    responsibilities: [
+      "Delivered work tools and materials to designated project sites.",
+      "Ensured assigned items reached their destinations safely.",
+      "Supported site operations by getting essential tools to the locations where they were needed.",
+    ],
+  },
+];
+
+export const ventures = [
+  {
+    name: "NEXIVRA",
+    role: "Founder | Technology Company",
+    description:
+      "Building a technology company focused on developing websites, digital platforms and intelligent solutions that address practical business challenges.",
+  },
+  {
+    name: "AutoFlowNG",
+    role: "Founder | Product Development",
+    description:
+      "Developing an AI-powered business growth and digital commerce platform under NEXIVRA, designed to improve customer engagement, product availability, sales activities and essential business operations.",
+  },
+];
+
 export const contact = [
   { label: "Email", value: "nehemiahe24@gmail.com" },
   { label: "WhatsApp", value: "+234 707 067 4656" },
