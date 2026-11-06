@@ -82,7 +82,7 @@
 }
 
 .tree-background { position: fixed; inset: 0; height: 100%; width: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-.tree-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.tree-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 75% center; }
 .tree-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--video-edge), var(--video-shade) 55%, var(--video-edge)); }
 
 @utility fade-up {
