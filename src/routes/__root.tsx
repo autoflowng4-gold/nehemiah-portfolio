@@ -92,7 +92,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Technology and digital operations professional. Building NEXIVRA and AutoFlowNG.",
       },
       { property: "og:type", content: "website" },
-      // { property: "og:image", content: "<absolute URL to a 1200x630 share image>" }, // add once an OG image exists
+      { property: "og:url", content: "https://nehemiah-portfolio-rho.vercel.app/" },
+      { property: "og:image", content: "https://nehemiah-portfolio-rho.vercel.app/media/nehemiah-portrait.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "1200" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Nehemiah — Technology & Digital Operations Professional" },
+      {
+        name: "twitter:description",
+        content: "Technology and digital operations professional. Building NEXIVRA and AutoFlowNG.",
+      },
+      { name: "twitter:image", content: "https://nehemiah-portfolio-rho.vercel.app/media/nehemiah-portrait.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
