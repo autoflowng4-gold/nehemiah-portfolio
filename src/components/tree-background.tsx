@@ -19,16 +19,50 @@ export function TreeBackground() {
   useEffect(() => {
     const el = videoRef.current;
     if (!animate || !el) return;
-    // Some mobile browsers don't honor the `autoPlay` attribute reliably,
-    // especially right after mount/hydration, so kick playback explicitly.
+
+    // Some mobile Chrome builds render the <video> and show the first
+    // frame, but then throttle/pause its internal clock (treating it as
+    // background/non-essential media) without firing a `pause` event we
+    // can easily see. A watchdog that checks `currentTime` is actually
+    // advancing — and force-restarts playback if it has stalled — works
+    // around that more reliably than a single play() call.
     const tryPlay = () => {
       el.play().catch((err) => {
         console.error("[TreeBackground] video play() failed:", err);
       });
     };
+
     tryPlay();
     document.addEventListener("visibilitychange", tryPlay);
-    return () => document.removeEventListener("visibilitychange", tryPlay);
+
+    let lastTime = el.currentTime;
+    let stalledChecks = 0;
+    const watchdog = window.setInterval(() => {
+      if (el.paused || el.ended) {
+        tryPlay();
+        return;
+      }
+      if (el.currentTime === lastTime) {
+        stalledChecks += 1;
+        if (stalledChecks >= 2) {
+          // currentTime hasn't moved across two checks (~3s) while the
+          // element reports itself as "playing" — force a real restart.
+          const t = el.currentTime;
+          el.pause();
+          el.currentTime = t;
+          tryPlay();
+          stalledChecks = 0;
+        }
+      } else {
+        stalledChecks = 0;
+      }
+      lastTime = el.currentTime;
+    }, 1500);
+
+    return () => {
+      document.removeEventListener("visibilitychange", tryPlay);
+      window.clearInterval(watchdog);
+    };
   }, [animate]);
 
   return (
