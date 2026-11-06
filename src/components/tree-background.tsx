@@ -19,6 +19,7 @@ export function TreeBackground() {
 
   useEffect(() => {
     const el = videoRef.current;
+    setDebug(`effect ran | animate=${animate} el=${el ? "found" : "NULL"}`);
     if (!animate || !el) return;
 
     // Some mobile Chrome builds render the <video> and show the first
