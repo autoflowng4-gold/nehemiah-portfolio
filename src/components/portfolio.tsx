@@ -4,14 +4,17 @@ import {
   capabilities,
   contact,
   cvUrl,
+  experience,
+  experienceIntro,
+  experienceSummary,
   navLinks,
   profile,
   projects,
   skillGroups,
+  ventures,
 } from "@/content/portfolio";
 import { Button } from "@/components/ui/button";
 import { TalkButton } from "@/components/chat";
-import { ProjectMediaGallery } from "@/components/project-media";
 import portrait from "@/assets/nehemiah-portrait.png.asset.json";
 
 const icons = [Code2, Headphones, MonitorCog, Briefcase];
@@ -287,7 +290,6 @@ export function ProjectCard({ p }: { p: (typeof projects)[number] }) {
           </ul>
         </div>
       </div>
-      <ProjectMediaGallery projectName={p.name} />
     </article>
   );
 }
@@ -308,9 +310,54 @@ export function Projects() {
 export function Experience() {
   return (
     <Section id="experience">
-      <SectionHeading eyebrow="Experience" title="Professional journey" />
-      <div className="rounded-xl border border-dashed p-10 text-center text-muted-foreground">
-        Professional experience details to be added.
+      <SectionHeading eyebrow="Experience" title="Professional journey">
+        {experienceIntro}
+      </SectionHeading>
+      <p className="mb-10 max-w-3xl text-muted-foreground">{experienceSummary}</p>
+
+      <div className="space-y-6">
+        {experience.map((e, i) => (
+          <article key={e.title} className="rounded-2xl border bg-card p-6 md:p-8">
+            <div className="flex flex-wrap items-baseline gap-3">
+              <span className="font-display text-sm text-primary">
+                0{i + 1}.
+              </span>
+              <h3 className="text-xl font-semibold md:text-2xl">{e.title}</h3>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">{e.role}</span>
+              <span aria-hidden="true">·</span>
+              <span>{e.period}</span>
+            </div>
+            <p className="mt-4 text-muted-foreground">{e.description}</p>
+            <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
+              {e.responsibilities.map((r) => (
+                <li key={r}>— {r}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+
+      <div className="mt-14">
+        <h3 className="text-xl font-semibold md:text-2xl">
+          Independent ventures &amp; technology projects
+        </h3>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {ventures.map((v) => (
+            <article key={v.name} className="rounded-xl border bg-card p-6">
+              <h4 className="text-lg font-semibold">{v.name}</h4>
+              <p className="mt-1 text-sm text-primary">{v.role}</p>
+              <p className="mt-3 text-sm text-muted-foreground">{v.description}</p>
+            </article>
+          ))}
+        </div>
+        <p className="mt-6 max-w-3xl text-sm text-muted-foreground">
+          One important distinction: the 2025–Present technology experience above shows the
+          practical work behind the scenes, while NEXIVRA and AutoFlowNG demonstrate how that
+          experience is being applied to build independent ventures. Both have a place in this
+          portfolio.
+        </p>
       </div>
     </Section>
   );
