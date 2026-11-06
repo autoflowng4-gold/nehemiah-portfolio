@@ -10,6 +10,7 @@ import {
   Projects,
   Skills,
   WhatIDo,
+  WorkingApproach,
 } from "@/components/portfolio";
 
 export const Route = createFileRoute("/")({
@@ -45,6 +46,7 @@ function Index() {
         <Skills />
         <Projects />
         <Experience />
+        <WorkingApproach />
         <ContactSection />
       </main>
       <Footer />
