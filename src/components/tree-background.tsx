@@ -3,15 +3,15 @@ import video from "@/assets/tree-background.mp4.asset.json";
 import poster from "@/assets/tree-poster.jpg.asset.json";
 
 export function TreeBackground() {
-  const [animate, setAnimate] = useState(false);
+  const [animate, setAnimate] = useState(true);
   useEffect(() => {
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Respect explicit data-saver mode, but don't silently disable the
+    // background video just because the OS has reduced-motion on — many
+    // phones enable that by default and this video is purely decorative
+    // (ambient loop, no flashing/parallax), so we keep it playing.
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } })
       .connection;
-    const update = () => setAnimate(!motion.matches && !connection?.saveData);
-    update();
-    motion.addEventListener("change", update);
-    return () => motion.removeEventListener("change", update);
+    setAnimate(!connection?.saveData);
   }, []);
   return (
     <div className="tree-background" aria-hidden="true">
