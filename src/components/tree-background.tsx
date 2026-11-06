@@ -27,15 +27,33 @@ export function TreeBackground() {
     // can easily see. A watchdog that checks `currentTime` is actually
     // advancing — and force-restarts playback if it has stalled — works
     // around that more reliably than a single play() call.
+    let cancelled = false;
     const tryPlay = () => {
+      // Guard against calling play() on a node that's no longer in the
+      // document (can happen transiently during SSR hydration — the
+      // server-rendered DOM gets swapped for the client one right as the
+      // effect fires, aborting any in-flight play() request).
+      if (cancelled || !el.isConnected) return;
       el.play()
-        .then(() => setDebug(`play() ok | paused=${el.paused} readyState=${el.readyState}`))
+        .then(() => {
+          if (!cancelled) setDebug(`play() ok | paused=${el.paused} readyState=${el.readyState}`);
+        })
         .catch((err) => {
+          if (cancelled) return;
           setDebug(`play() FAILED: ${err.name}: ${err.message}`);
+          // AbortError from hydration churn is transient — retry shortly
+          // once the DOM has settled, instead of giving up.
+          if (err.name === "AbortError") {
+            window.setTimeout(() => {
+              if (!cancelled && el.isConnected) tryPlay();
+            }, 300);
+          }
         });
     };
 
-    tryPlay();
+    // Defer the first attempt a tick past mount so it runs after any
+    // hydration-related DOM swap has finished, not in the middle of it.
+    const raf = window.requestAnimationFrame(() => tryPlay());
     document.addEventListener("visibilitychange", tryPlay);
 
     let lastTime = el.currentTime;
@@ -64,6 +82,8 @@ export function TreeBackground() {
     }, 1500);
 
     return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(raf);
       document.removeEventListener("visibilitychange", tryPlay);
       window.clearInterval(watchdog);
     };
