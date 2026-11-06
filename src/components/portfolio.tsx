@@ -354,12 +354,6 @@ export function Experience() {
             </article>
           ))}
         </div>
-        <p className="mt-6 max-w-3xl text-sm text-muted-foreground">
-          One important distinction: the 2025–Present technology experience above shows the
-          practical work behind the scenes, while NEXIVRA and AutoFlowNG demonstrate how that
-          experience is being applied to build independent ventures. Both have a place in this
-          portfolio.
-        </p>
       </div>
     </Section>
   );
