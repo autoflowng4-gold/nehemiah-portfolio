@@ -3,23 +3,16 @@ import video from "@/assets/tree-background.mp4.asset.json";
 import poster from "@/assets/tree-poster.jpg.asset.json";
 
 export function TreeBackground() {
-  const [animate, setAnimate] = useState(true);
-  const [debug, setDebug] = useState("init");
+  const [animate] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    // Respect explicit data-saver mode, but don't silently disable the
-    // background video just because the OS has reduced-motion on — many
-    // phones enable that by default and this video is purely decorative
-    // (ambient loop, no flashing/parallax), so we keep it playing.
-    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } })
-      .connection;
-    setAnimate(!connection?.saveData);
-  }, []);
+  // Always animate: this is a small, muted, looping background video with
+  // no flashing/parallax, so it isn't worth gating on reduced-motion or
+  // data-saver signals — those were silently disabling it for many real
+  // visitors (including normal Chrome with Data Saver / Lite mode on).
 
   useEffect(() => {
     const el = videoRef.current;
-    setDebug(`effect ran | animate=${animate} el=${el ? "found" : "NULL"}`);
     if (!animate || !el) return;
 
     // Some mobile Chrome builds render the <video> and show the first
@@ -35,21 +28,18 @@ export function TreeBackground() {
       // server-rendered DOM gets swapped for the client one right as the
       // effect fires, aborting any in-flight play() request).
       if (cancelled || !el.isConnected) return;
-      el.play()
-        .then(() => {
-          if (!cancelled) setDebug(`play() ok | paused=${el.paused} readyState=${el.readyState}`);
-        })
-        .catch((err) => {
-          if (cancelled) return;
-          setDebug(`play() FAILED: ${err.name}: ${err.message}`);
-          // AbortError from hydration churn is transient — retry shortly
-          // once the DOM has settled, instead of giving up.
-          if (err.name === "AbortError") {
-            window.setTimeout(() => {
-              if (!cancelled && el.isConnected) tryPlay();
-            }, 300);
-          }
-        });
+      el.play().catch((err) => {
+        if (cancelled) return;
+        // AbortError from hydration churn is transient — retry shortly
+        // once the DOM has settled, instead of giving up.
+        if (err.name === "AbortError") {
+          window.setTimeout(() => {
+            if (!cancelled && el.isConnected) tryPlay();
+          }, 300);
+        } else {
+          console.error("[TreeBackground] video play() failed:", err);
+        }
+      });
     };
 
     // Defer the first attempt a tick past mount so it runs after any
@@ -60,9 +50,6 @@ export function TreeBackground() {
     let lastTime = el.currentTime;
     let stalledChecks = 0;
     const watchdog = window.setInterval(() => {
-      setDebug(
-        `t=${el.currentTime.toFixed(2)} paused=${el.paused} ended=${el.ended} readyState=${el.readyState} networkState=${el.networkState} muted=${el.muted}`,
-      );
       if (el.paused || el.ended) {
         tryPlay();
         return;
@@ -106,30 +93,10 @@ export function TreeBackground() {
           preload="auto"
           onError={(e) => {
             console.error("[TreeBackground] video error:", e.currentTarget.error);
-            setAnimate(false);
           }}
         />
       )}
       <div className="tree-overlay" />
-      {/* TEMPORARY DEBUG OVERLAY — remove once the playback issue is diagnosed */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 8,
-          left: 8,
-          zIndex: 999,
-          background: "rgba(0,0,0,0.85)",
-          color: "#0f0",
-          font: "11px monospace",
-          padding: "6px 8px",
-          borderRadius: 4,
-          maxWidth: "90vw",
-          wordBreak: "break-all",
-          pointerEvents: "none",
-        }}
-      >
-        {debug}
-      </div>
     </div>
   );
 }
