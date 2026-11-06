@@ -15,6 +15,7 @@ import {
 } from "@/content/portfolio";
 import { Button } from "@/components/ui/button";
 import { TalkButton } from "@/components/chat";
+import { ProjectMediaGallery } from "@/components/project-media";
 import portrait from "@/assets/nehemiah-portrait.png.asset.json";
 
 const icons = [Code2, Headphones, MonitorCog, Briefcase];
@@ -290,6 +291,7 @@ export function ProjectCard({ p }: { p: (typeof projects)[number] }) {
           </ul>
         </div>
       </div>
+      <ProjectMediaGallery projectName={p.name} />
     </article>
   );
 }
