@@ -94,13 +94,13 @@ export function Hero() {
             href="#projects"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-primary px-6 font-semibold text-primary-foreground transition hover:opacity-90"
           >
-            Explore my work <ArrowRight size={18} />
+            Explore My Work <ArrowRight size={18} />
           </a>
           <a
             href="#contact"
             className="inline-flex h-12 items-center justify-center rounded-md border px-6 font-semibold transition hover:bg-secondary"
           >
-            Get in touch
+            Contact Me
           </a>
           <a
             href={cvUrl}
@@ -149,9 +149,8 @@ export function ProfileSection() {
           loading="lazy"
         />
         <div className="text-center md:text-left">
-          <p className="mb-3 text-sm font-semibold text-primary">MEET NEHEMIAH</p>
-          <h2 className="text-3xl font-semibold">Technology. People. Possibility.</h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{profile.about[0]}</p>
+          <h2 className="text-3xl font-semibold">{profile.profileTagline}</h2>
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{profile.profileSubtext}</p>
         </div>
       </div>
     </section>
@@ -181,12 +180,11 @@ export function About() {
   return (
     <Section id="about">
       <div className="grid gap-10 md:grid-cols-[1fr_1.4fr]">
-        <SectionHeading eyebrow="About" title="Technology, people and operations." />
+        <SectionHeading eyebrow="About" title={profile.aboutTitle} />
         <div className="space-y-5 text-lg text-muted-foreground">
           {profile.about.map((p) => (
             <p key={p}>{p}</p>
           ))}
-          <Placeholder>Expanded biography awaiting confirmation</Placeholder>
         </div>
       </div>
     </Section>
@@ -220,7 +218,7 @@ export function CapabilityCard({
 export function WhatIDo() {
   return (
     <Section id="what-i-do" alt>
-      <SectionHeading eyebrow="What I do" title="Four ways I add value." />
+      <SectionHeading eyebrow="Professional Capabilities" title="How I contribute to businesses." />
       <div className="grid gap-4 sm:grid-cols-2">
         {capabilities.map((c, i) => (
           <CapabilityCard key={c.title} {...c} index={i} />
@@ -295,7 +293,7 @@ export function ProjectCard({ p }: { p: (typeof projects)[number] }) {
 export function Projects() {
   return (
     <Section id="projects" alt>
-      <SectionHeading eyebrow="Projects" title="Selected work" />
+      <SectionHeading eyebrow="Selected Work" title="Projects & initiatives" />
       <div className="space-y-4">
         {projects.map((p) => (
           <ProjectCard key={p.name} p={p} />
@@ -316,10 +314,32 @@ export function Experience() {
   );
 }
 
+export function WorkingApproach() {
+  return (
+    <Section id="working-approach" alt>
+      <SectionHeading
+        eyebrow="Working Approach"
+        title="Understand the problem. Build the solution. Improve the experience."
+      >
+        Every project begins with understanding what needs to work better. From there, the focus
+        is on developing practical solutions, paying attention to usability and making sure the
+        technology serves a real purpose.
+      </SectionHeading>
+    </Section>
+  );
+}
+
 export function ContactSection() {
   return (
     <Section id="contact" alt>
-      <SectionHeading eyebrow="Contact" title="Let's work together." />
+      <SectionHeading
+        eyebrow="Contact"
+        title="Have a project, opportunity or business challenge?"
+      >
+        Whether you are looking for digital support, website development, technical assistance or
+        someone who can help improve your business operations, let's have a conversation.
+      </SectionHeading>
+      <p className="mb-6 text-lg font-medium">Let's discuss what you need.</p>
       <dl className="grid gap-4 sm:grid-cols-2">
         {contact.map((c) => {
           const href =
@@ -327,12 +347,24 @@ export function ContactSection() {
               ? `mailto:${c.value}`
               : c.label === "WhatsApp" && c.value
                 ? `https://wa.me/${c.value.replace(/[^0-9]/g, "")}`
-                : c.label === "Twitter / X" && c.value
-                  ? c.value
-                  : null;
+                : c.label === "Phone" && c.value
+                  ? `tel:${c.value.replace(/[^0-9+]/g, "")}`
+                  : c.label === "Twitter / X" && c.value
+                    ? c.value
+                    : null;
+          const ctaLabel =
+            c.label === "Email"
+              ? "Send an Email"
+              : c.label === "WhatsApp"
+                ? "WhatsApp"
+                : c.label === "Phone"
+                  ? "Call"
+                  : c.label === "Twitter / X"
+                    ? "Twitter"
+                    : c.label;
           return (
             <div key={c.label} className="rounded-xl border bg-card p-5">
-              <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{c.label}</dt>
+              <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{ctaLabel}</dt>
               <dd className="mt-2 font-medium">
                 {c.value ? (
                   href ? (
