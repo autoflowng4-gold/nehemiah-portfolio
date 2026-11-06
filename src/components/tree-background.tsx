@@ -4,6 +4,7 @@ import poster from "@/assets/tree-poster.jpg.asset.json";
 
 export function TreeBackground() {
   const [animate, setAnimate] = useState(true);
+  const [debug, setDebug] = useState("init");
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -27,9 +28,11 @@ export function TreeBackground() {
     // advancing — and force-restarts playback if it has stalled — works
     // around that more reliably than a single play() call.
     const tryPlay = () => {
-      el.play().catch((err) => {
-        console.error("[TreeBackground] video play() failed:", err);
-      });
+      el.play()
+        .then(() => setDebug(`play() ok | paused=${el.paused} readyState=${el.readyState}`))
+        .catch((err) => {
+          setDebug(`play() FAILED: ${err.name}: ${err.message}`);
+        });
     };
 
     tryPlay();
@@ -38,6 +41,9 @@ export function TreeBackground() {
     let lastTime = el.currentTime;
     let stalledChecks = 0;
     const watchdog = window.setInterval(() => {
+      setDebug(
+        `t=${el.currentTime.toFixed(2)} paused=${el.paused} ended=${el.ended} readyState=${el.readyState} networkState=${el.networkState} muted=${el.muted}`,
+      );
       if (el.paused || el.ended) {
         tryPlay();
         return;
@@ -45,8 +51,6 @@ export function TreeBackground() {
       if (el.currentTime === lastTime) {
         stalledChecks += 1;
         if (stalledChecks >= 2) {
-          // currentTime hasn't moved across two checks (~3s) while the
-          // element reports itself as "playing" — force a real restart.
           const t = el.currentTime;
           el.pause();
           el.currentTime = t;
@@ -86,6 +90,25 @@ export function TreeBackground() {
         />
       )}
       <div className="tree-overlay" />
+      {/* TEMPORARY DEBUG OVERLAY — remove once the playback issue is diagnosed */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 8,
+          left: 8,
+          zIndex: 999,
+          background: "rgba(0,0,0,0.85)",
+          color: "#0f0",
+          font: "11px monospace",
+          padding: "6px 8px",
+          borderRadius: 4,
+          maxWidth: "90vw",
+          wordBreak: "break-all",
+          pointerEvents: "none",
+        }}
+      >
+        {debug}
+      </div>
     </div>
   );
 }
