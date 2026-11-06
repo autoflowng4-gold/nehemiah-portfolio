@@ -2,13 +2,17 @@
 
 export const profile = {
   name: "Nehemiah",
-  positioning: "Technology & Digital Operations Professional",
-  headline: "I build digital experiences and help businesses run better.",
+  positioning: "Technology & Digital Operations",
+  headline: "Building digital solutions that make business work better.",
   intro:
-    "Technology and digital operations professional with practical experience in website development, digital platform management, customer support, and technical problem-solving.",
+    "From websites and digital platforms to customer support and technology operations, I help turn business needs into practical digital experiences.",
+  profileTagline: "Technology, business and practical problem-solving.",
+  profileSubtext: "A professional approach to building, managing and improving digital experiences.",
+  aboutTitle: "Connecting technology with real business needs.",
   about: [
-    "I am a technology and digital operations professional with practical experience in website development, digital platform management, customer support, and technical problem-solving. I enjoy turning ideas and everyday business challenges into useful digital solutions.",
-    "I am currently building NEXIVRA, a technology company focused on intelligent solutions for a connected world, with AutoFlowNG as its first product — an AI-powered business growth and digital commerce platform. I am interested in opportunities where I can combine technical ability, communication, creativity, and problem-solving to help businesses and people work better.",
+    "Effective technology should do more than look impressive. It should solve problems, simplify processes and create better experiences for the people who use it.",
+    "My work spans website development, digital platform management, customer support, technical troubleshooting and digital operations. I bring these capabilities together to help businesses establish a stronger digital presence and manage their everyday operations more effectively.",
+    "I am also building NEXIVRA, a technology company focused on developing intelligent solutions for a connected world.",
   ],
 };
 
@@ -24,20 +28,28 @@ export const navLinks = [
 
 export const capabilities = [
   {
-    title: "Web & Software Development",
-    description: "Building responsive websites and web applications with modern, maintainable tools.",
+    title: "Website & Platform Development",
+    description:
+      "Building responsive websites and digital platforms that give businesses a professional online presence and practical tools to serve their customers.",
   },
   {
-    title: "Customer Support",
-    description: "Helping customers online with clear, patient and timely communication.",
+    title: "Digital Operations",
+    description:
+      "Supporting the management, improvement and day-to-day operation of digital systems and business platforms.",
   },
   {
-    title: "Website & Digital Platform Management",
-    description: "Maintaining, updating and monitoring websites and digital platforms.",
+    title: "Customer Support & Engagement",
+    description:
+      "Helping businesses communicate effectively with customers, respond to enquiries and create better service experiences.",
   },
   {
-    title: "Digital Operations & Administrative Support",
-    description: "Supporting business operations, troubleshooting technical issues and keeping work organised.",
+    title: "Technical Support & Problem-Solving",
+    description:
+      "Identifying technical issues, troubleshooting problems and helping maintain reliable digital experiences.",
+  },
+  {
+    title: "Business Technology Solutions",
+    description: "Understanding operational challenges and translating them into practical technology solutions.",
   },
 ];
 
@@ -52,12 +64,30 @@ export const skillGroups = [
 export const projects = [
   {
     name: "AutoFlowNG",
-    org: "by NEXIVRA",
-    status: "In development",
+    org: "AI-powered business growth and digital commerce platform",
+    status: "In Development",
     description:
-      "An AI-powered business growth and digital commerce platform being developed by NEXIVRA, the parent technology brand. AutoFlowNG is its first product.",
+      "A product being developed under NEXIVRA to help businesses improve customer engagement, manage product availability, support sales activities and coordinate essential business operations.",
     implemented: ["Implemented features awaiting confirmation"],
     planned: ["AI-powered business growth tools", "Digital commerce capabilities"],
+  },
+  {
+    name: "NEXIVRA",
+    org: "Technology company",
+    status: "Active Development",
+    description:
+      "An independent technology venture focused on building websites, digital platforms and intelligent solutions that address practical business challenges.",
+    implemented: ["Implemented features awaiting confirmation"],
+    planned: ["Expanded product lineup", "Public-facing presence"],
+  },
+  {
+    name: "Personal Portfolio",
+    org: "Professional Website",
+    status: "Live",
+    description:
+      "A responsive professional portfolio showcasing my technical capabilities, digital operations experience, selected projects and professional work.",
+    implemented: ["Responsive design", "Live deployment"],
+    planned: ["Ongoing content updates"],
   },
 ];
 
