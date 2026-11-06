@@ -56,8 +56,8 @@
   --border: oklch(0.32 0.02 255);
   --input: oklch(0.32 0.02 255);
   --ring: oklch(0.82 0.13 210);
-  --video-shade: oklch(0.12 0.045 255 / 0.68);
-  --video-edge: oklch(0.1 0.03 255 / 0.87);
+  --video-shade: oklch(0.12 0.045 255 / 0.42);
+  --video-edge: oklch(0.1 0.03 255 / 0.65);
 }
 
 @layer base {
