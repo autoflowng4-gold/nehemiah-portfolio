@@ -1,4 +1,6 @@
 import { useState, type ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Menu, X, ArrowRight, Code2, Headphones, MonitorCog, Briefcase } from "lucide-react";
 import {
   capabilities,
@@ -16,14 +18,41 @@ import {
 import { Button } from "@/components/ui/button";
 import { TalkButton } from "@/components/chat";
 import { ProjectMediaGallery } from "@/components/project-media";
+import { usePortfolioAuth } from "@/components/auth-provider";
+import { supabase } from "@/integrations/supabase/client";
 import portrait from "@/assets/nehemiah-portrait.png.asset.json";
 
 const icons = [Code2, Headphones, MonitorCog, Briefcase];
 
+function OwnerVisitorBanner() {
+  const { isOwner } = usePortfolioAuth();
+  const visitors = useQuery({
+    queryKey: ["site-visitor-count"],
+    enabled: isOwner,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("site_visitor_count");
+      if (error) throw error;
+      return data as number;
+    },
+  });
+  if (!isOwner) return null;
+  return (
+    <div className="flex h-9 items-center justify-center border-b bg-primary/10 px-5 text-xs text-primary">
+      {visitors.isPending
+        ? "Loading visitor count…"
+        : visitors.error
+          ? "Visitor count unavailable"
+          : `${(visitors.data ?? 0).toLocaleString()} people have visited this website`}
+    </div>
+  );
+}
+
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { isOwner } = usePortfolioAuth();
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b bg-background/85 backdrop-blur">
+      <OwnerVisitorBanner />
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <a href="#home" className="font-display text-lg font-semibold tracking-[0.2em]">
           NEHEMIAH
@@ -40,6 +69,11 @@ export function Header() {
           </ul>
         </nav>
         <div className="flex items-center gap-2">
+          {isOwner && (
+            <Button asChild variant="outline" className="h-11">
+              <Link to="/inbox">Inbox</Link>
+            </Button>
+          )}
           <TalkButton />
           <Button
             type="button"
