@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/components/auth-provider";
 import { TreeBackground } from "@/components/tree-background";
+import { ViewTracker } from "@/components/view-tracker";
 
 function NotFoundComponent() {
   return (
@@ -146,6 +147,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthProvider>
         <TreeBackground />
+        <ViewTracker />
         <Outlet />
       </AuthProvider>
     </QueryClientProvider>
